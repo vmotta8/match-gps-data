@@ -82,6 +82,11 @@ def MEDP(traj1, traj2, latitude=LATITUDE, longitude=LONGITUDE):
 
 c1 = pd.read_csv('coordinates/1.csv')
 c2 = pd.read_csv('coordinates/2.csv')
+c3 = pd.read_csv('coordinates/3.csv')
 
-somaP = MEDP(c1, c2)
-print(somaP)
+somaP1 = MEDP(c1, c2)
+somaP2 = MEDP(c1, c3)
+somaP3 = MEDP(c2, c3)
+print(somaP1)
+print(somaP2)
+print(somaP3)
