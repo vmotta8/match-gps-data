@@ -1,13 +1,14 @@
+# functions by: https://github.com/InsightLab/PyMove
+
 import math
 
 import numpy as np
 import pandas as pd
+
 from scipy.spatial import distance
 
-from pymove import utils
-from pymove.utils.constants import DATETIME, EARTH_RADIUS, LATITUDE, LONGITUDE
 
-def nearest_points(traj1, traj2, latitude=LATITUDE, longitude=LONGITUDE):
+def nearest_points(traj1, traj2, latitude='lat', longitude='lon'):
     """
     For each point on a trajectory, it returns the point closest to
     another trajectory based on the Euclidean distance.
@@ -44,7 +45,7 @@ def nearest_points(traj1, traj2, latitude=LATITUDE, longitude=LONGITUDE):
 
     return result
 
-def MEDP(traj1, traj2, latitude=LATITUDE, longitude=LONGITUDE):
+def MEDP(traj1, traj2, latitude='lat', longitude='lon'):
     """
     Returns the Mean Euclidian Distance Predictive between
     two trajectories, which considers only the spatial
@@ -68,9 +69,6 @@ def MEDP(traj1, traj2, latitude=LATITUDE, longitude=LONGITUDE):
     soma = 0
     traj2 = nearest_points(traj1, traj2, latitude, longitude)
 
-    # if(len(traj2) < len(traj1)):
-    #     traj1, traj2 = traj2, traj1
-
     for i in range(0, len(traj1)):
         this_distance = distance.euclidean(
             (traj1[latitude].iloc[i],
@@ -87,6 +85,7 @@ c3 = pd.read_csv('coordinates/3.csv')
 somaP1 = MEDP(c1, c2)
 somaP2 = MEDP(c1, c3)
 somaP3 = MEDP(c2, c3)
+
 print(somaP1)
 print(somaP2)
 print(somaP3)
