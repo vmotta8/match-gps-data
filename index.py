@@ -78,14 +78,12 @@ def MEDP(traj1, traj2, latitude='lat', longitude='lon'):
         soma = soma + this_distance
     return soma
 
-c1 = pd.read_csv('coordinates/1.csv')
-c2 = pd.read_csv('coordinates/2.csv')
-c3 = pd.read_csv('coordinates/3.csv')
+# Rotas semelhantes
+c1 = pd.read_csv('coordinates/User1/3.csv')
+c2 = pd.read_csv('coordinates/User1/4.csv')
+c3 = pd.read_csv('coordinates/User2/1.csv')
+c4 = pd.read_csv('coordinates/User2/2.csv')
 
-somaP1 = MEDP(c1, c2)
-somaP2 = MEDP(c1, c3)
-somaP3 = MEDP(c2, c3)
+soma = MEDP(c1, c2)
 
-print(somaP1)
-print(somaP2)
-print(somaP3)
+print(soma)
