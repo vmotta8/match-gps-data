@@ -1,6 +1,7 @@
 # functions by: https://github.com/InsightLab/PyMove
 
 import math
+import os
 
 import numpy as np
 import pandas as pd
@@ -78,12 +79,18 @@ def MEDP(traj1, traj2, latitude='lat', longitude='lon'):
         soma = soma + this_distance
     return soma
 
-# Rotas semelhantes
-c1 = pd.read_csv('coordinates/User1/3.csv')
-c2 = pd.read_csv('coordinates/User1/4.csv')
-c3 = pd.read_csv('coordinates/User2/1.csv')
-c4 = pd.read_csv('coordinates/User2/2.csv')
 
-soma = MEDP(c1, c2)
+def run():
+  Path = os.path.dirname(os.path.realpath(__file__))
+  directory_list = os.listdir(f"{Path}/coordinates")
 
-print(soma)
+  users_identified_patterns = {}
+  for directory in directory_list:
+    all_user_csv = os.listdir(f"{Path}/coordinates/{directory}")
+    users_identified_patterns[directory] = identifies_patterns(all_user_csv) # implementar função
+
+  users_compared_patterns = compare_patterns(users_identified_patterns) # implementar função
+
+  return users_compared_patterns
+
+run()
