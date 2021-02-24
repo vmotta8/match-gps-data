@@ -85,7 +85,7 @@ def identifies_patterns(all_user_csv):
     for csv in all_user_csv:
         arr = []
         c1 = pd.read_csv(csv)
-        
+
         for coordinate in all_user_csv:
             c2 = pd.read_csv(coordinate)
             medp = MEDP(c1, c2)
@@ -102,7 +102,31 @@ def identifies_patterns(all_user_csv):
 
     return arrAux
 
+def compare_patterns(users_identified_patterns):
+  users_compared_patterns = {}
+  users_compared_patterns_arr = []
 
+  for user in users_identified_patterns:
+      user_patterns = users_identified_patterns[user]
+
+      for other_user in users_identified_patterns:
+          other_user_patterns = users_identified_patterns[other_user]
+
+          for pattern in user_patterns:
+            c1 = pd.read_csv(pattern[0])
+
+            for other_pattern in other_user_patterns:
+                c2 = pd.read_csv(other_pattern[0])
+
+                medp = MEDP(c1,c2)
+
+                if medp > 0 and medp <= 0.015:
+                    users_compared_patterns_arr.append(other_user)
+
+      users_compared_patterns[user] = users_compared_patterns_arr
+      users_compared_patterns_arr = []
+
+  return users_compared_patterns
 
 def run():
     Path = os.path.dirname(os.path.realpath(__file__))
@@ -117,33 +141,9 @@ def run():
 
         users_identified_patterns[directory] = identifies_patterns(all_user_csv)
 
-    print (users_identified_patterns)
-        #users_compared_patterns = compare_patterns(users_identified_patterns) # implementar função
+    users_compared_patterns = compare_patterns(users_identified_patterns)
 
-        #return users_compared_patterns
+    return users_compared_patterns
 
-run()
-
-
-'''
-função identifies_patterns()
-   recebe um array com a localização de vários csvs e retorna um dict com o usuário e a localização das suas rotas padronizadas
-
-   - recebe (['path/User0/1.csv', 'path/User0/2.csv', 'path/User0/3.csv', 'path/User0/4.csv', 'path/User0/5.csv', 'path/User0/6.csv', 'path/User0/7.csv', 'path/User0/8.csv', 'path/User0/9.csv', 'path/User0/10.csv'])
-
-   - retorna ['path/User0/3.csv', 'path/User0/4.csv', 'path/User0/5.csv', 'path/User0/6.csv'], ['path/User0/9.csv', 'path/User0/10.csv']
-
-
-   - recebe (['path/User1/1.csv', 'path/User1/2.csv', 'path/User1/3.csv', 'path/User1/4.csv'])
-
-   - retorna ['path/User1/3.csv', 'path/User1/4.csv']
-
-
-
- função compare_patterns()
-   recebe dict com todos os usuários e seus padrões de rotas e retorna um dict com todos os usuários com um array dos usuários que tem o mesmo padrão de rota deles
-
-   - recebe ({ User0: ['path/User0/3.csv', 'path/User0/4.csv', 'path/User0/5.csv', 'path/User0/6.csv'], ['path/User0/9.csv', 'path/User0/10.csv'], User1: ['path/User1/3.csv', 'path/User1/4.csv']})
-
-   - retorna ({ User0: [ User1 ], User1: [ User 0 ]})
-'''
+users_compared_patterns = run()
+print(users_compared_patterns)
